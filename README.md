@@ -20,6 +20,11 @@ Simulação de um sistema de tempo real com múltiplas tarefas em C, utilizando 
 
 ### 🔵 PowerShell (Windows) – run.ps1
 
+Se o WSL não estiver instalado, execute:
+```
+wsl --update
+```
+
 ```powershell
 # Defina a variável da API
 $env:API_KEY = "sua_chave_aqui"
