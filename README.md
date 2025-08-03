@@ -11,24 +11,49 @@ Simulação de um sistema de tempo real com múltiplas tarefas em C, utilizando 
 
 ## 🔧 Pré-requisitos
 
-- Docker instalado na máquina
+- Docker Desktop instalado
 - Chave de API gratuita do [OpenWeatherMap](https://openweathermap.org/api)
+- Ambiente compatível com shell: PowerShell, Git Bash, ou WSL
 
 ---
 
-## 📦 Como construir
+## 🔑 Configurar a chave da API
+
+Antes de executar, você precisa definir a chave da API como uma variável de ambiente chamada `API_KEY`.
+
+
+## 📦 Como executar
+
+### 🟢 Git Bash / WSL / Linux (run.sh)
 
 ```bash
-chmod +x run.sh
+chmod +x run.sh         # Só precisa fazer isso uma vez
+./run.sh                # Executa sem jitter ou delay
+./run.sh j              # Executa com jitter
+./run.sh d              # Executa com delay
+./run.sh jd             # Executa com jitter e delay
+./run.sh --delete       # Remove a imagem Docker
+./run.sh --help         # Mostra ajuda
 ```
 
-## Como executar
 
-```bash
-./run.sh             # Executa sem jitter ou delay
-./run.sh j           # Com jitter
-./run.sh d           # Com delay
-./run.sh jd          # Com ambos
-./run.sh --delete    # Exclui imagem Docker
-./run.sh --help      # Mostra ajuda
+## 📂 Estrutura do Projeto
+
 ```
+sim_tempo_real/
+├── src/
+│   └── ... (código-fonte em C)
+├── CMakeLists.txt
+├── Dockerfile
+├── run.sh          # Script para Unix-like (Bash)
+├── run.ps1         # Script para PowerShell (Windows)
+└── README.md
+```
+
+---
+
+## 📌 Observações
+
+- A imagem Docker usa Ubuntu 24.04 e instala automaticamente todas as dependências (`cmake`, `libcurl`, etc.).
+- O programa simula uma aplicação de tempo real com prioridades, jitter, delays e coleta de temperatura real via rede.
+- Os parâmetros `j`, `d`, e `jd` controlam o comportamento simulado da tarefa crítica.
