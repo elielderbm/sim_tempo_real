@@ -1,59 +1,64 @@
 # sim_tempo_real
 
-Simulação de um sistema de tempo real com múltiplas tarefas em C, utilizando `pthread`, `libcurl`, `CMake` e executado em ambiente Docker (Ubuntu 24.04). A aplicação simula:
+Simulação de um sistema de tempo real em C com ESP32 e FreeRTOS.
+
+A aplicação simula:
 
 - Controle periódico com deadline (tarefa de 100ms)
 - Jitter artificial opcional
-- Aquisição de temperatura real da cidade de São Paulo (via OpenWeatherMap API)
-- Atraso de rede simulado na tarefa da API
+- Atraso artificial opcional
 
----
 
 ## 🔧 Pré-requisitos
 
-- Docker Desktop instalado
-- Chave de API gratuita do [OpenWeatherMap](https://openweathermap.org/api)
-- Ambiente compatível com shell: PowerShell, Git Bash, ou WSL
+- VS Code instalado
+- Extensão ESP-IDF (v5.4.2)
+- Criação de novo projeto com ESP32
+- ESP-IDF instalado e configurado (`idf.py`)
+- ESP32 devidamente conectado
 
----
 
-## 🔑 Configurar a chave da API
+## 🎯 Funcionalidades
 
-Antes de executar, você precisa definir a chave da API como uma variável de ambiente chamada `API_KEY`.
+- Tarefa periódica de controle (100ms)
+- Tarefa de leitura de temperatura externa simulada
+- Tarefa de entrada UART (sem bloqueio)
+- Mutex para sincronização
+- Simulação de jitter e delay
+- Log por `ESP_LOG`
+
+
+## ⌨️ Entrada manual
+
+Digite uma temperatura no terminal e pressione ENTER para atualizar o valor atual. Ex:
+
+```
+45
+```
+
+## ⚙️ Configuração interna
+
+Você pode ativar/desativar jitter e delay diretamente no `main.c`:
+
+```
+simular_jitter = true;
+simular_delay_api = true;
+```
 
 
 ## 📦 Como executar
 
-### 🟢 Git Bash / WSL / Linux (run.sh)
-
-```bash
-chmod +x run.sh         # Só precisa fazer isso uma vez
-./run.sh                # Executa sem jitter ou delay
-./run.sh j              # Executa com jitter
-./run.sh d              # Executa com delay
-./run.sh jd             # Executa com jitter e delay
-./run.sh --delete       # Remove a imagem Docker
-./run.sh --help         # Mostra ajuda
-```
+- No VS Code, substitua a pasta main do projeto criado (pode ser um exemplo hello_world), pela pasta main deste repositório.
+- Compile, grave e veja o monitor através dos botões rápidos da extensão do VS Code
 
 
-## 📂 Estrutura do Projeto
+## 📂 Estrutura
 
 ```
-sim_tempo_real/
-├── src/
-│   └── ... (código-fonte em C)
-├── CMakeLists.txt
-├── Dockerfile
-├── run.sh          # Script para Unix-like (Bash)
-├── run.ps1         # Script para PowerShell (Windows)
-└── README.md
+esp32_sim_tempo_real/
+├── main/
+│   ├── main.c
+│   ├── weather.c
+│   └── weather.h
+├── README.md
 ```
-
----
-
-## 📌 Observações
-
-- A imagem Docker usa Ubuntu 24.04 e instala automaticamente todas as dependências (`cmake`, `libcurl`, etc.).
-- O programa simula uma aplicação de tempo real com prioridades, jitter, delays e coleta de temperatura real via rede.
-- Os parâmetros `j`, `d`, e `jd` controlam o comportamento simulado da tarefa crítica.
